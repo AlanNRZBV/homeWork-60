@@ -1,10 +1,20 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Col, Container, Row } from 'react-bootstrap';
+import Messages from '../components/Messages/Messages.tsx';
+import MessagesForm from '../components/MessagesForm/MessagesForm.tsx';
 
-function App() {
+const App = () => (
+  <Container>
+    <Row className="flex-column vh-100 py-3">
+      <Col className="border border-bottom-0 border-2 rounded-top-3 overflow-auto">
+        <Messages />
+      </Col>
+      <Col className="border border-2 rounded-bottom-3 flex-grow-0 d-flex flex-column">
+        <MessagesForm />
+      </Col>
+    </Row>
+  </Container>
+);
 
-  return (
-    <p className="text text-primary">test</p>
-  )
-}
-
-export default App
+export default App;
