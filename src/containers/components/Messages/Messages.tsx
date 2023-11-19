@@ -1,10 +1,18 @@
-import React from "react";
-import MessagesItem from "./MessagesItem.tsx";
+import React, { FC } from 'react';
+import MessagesItem from './MessagesItem.tsx';
+import { IMessages } from '../../../../types';
 
-const Messages = () => {
+const Messages: FC<IMessages> = ({ messages }) => {
   return (
     <div className="py-3 d-flex flex-column overflow-auto">
-      <MessagesItem/>
+      {messages.map((item) => (
+        <MessagesItem
+          message={item.message}
+          author={item.author}
+          datetime={item.datetime}
+          key={item._id}
+        />
+      ))}
     </div>
   );
 };
