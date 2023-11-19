@@ -10,14 +10,15 @@ const getMessagesUrl = 'http://146.185.154.90:8000/messages';
 
 const App = () => {
   const [messages, setMessages] = useState<IMessagesItem[]>([]);
-
   useEffect(() => {
-      axios.get(getMessagesUrl).then(response =>{
-        setMessages(response.data)
-        }
-      ).catch(error=>{
-        console.log(error)
+    axios
+      .get(getMessagesUrl)
+      .then((response) => {
+        setMessages(response.data);
       })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   return (
@@ -27,7 +28,7 @@ const App = () => {
           <Messages messages={messages} />
         </Col>
         <Col className="border border-2 rounded-bottom-3 flex-grow-0 d-flex flex-column">
-          <MessagesForm />
+          <MessagesForm url={getMessagesUrl} />
         </Col>
       </Row>
     </Container>

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import MessagesItem from './MessagesItem.tsx';
 import { IMessages } from '../../../../types';
 

@@ -1,18 +1,60 @@
-import React from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { SendFill } from 'react-bootstrap-icons';
+import axios from 'axios';
+import { IMessageForm } from '../../../../types';
 
-const MessagesForm = () => {
+const MessagesForm: FC<IMessageForm> = ({ url }) => {
+  const [username, setUsername] = useState('');
+  const [message, setMessage] = useState('');
+  const isSent = useRef(false);
+  const [toggle, setToggle] = useState(false);
+  console.log('Form - render');
 
-  const submitHandler = (e: React.FormEvent)=>{
-    e.preventDefault()
-  }
+  useEffect(() => {
+    if (isSent.current) {
+      const data = {
+        message: message,
+        author: username,
+      };
+      axios
+        .post(url, data, {
+          headers: { 'content-type': 'application/x-www-form-urlencoded' },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+      return () => {
+        setMessage('');
+      };
+    } else {
+      isSent.current = true;
+    }
+    return ()=>{
+      setMessage('')
+    }
+  }, [toggle]);
+  const submitHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    setToggle((prevState) => !prevState);
+  };
 
   return (
-    <Form className="pt-3">
+    <Form className="pt-3" onSubmit={submitHandler}>
       <InputGroup className="mb-3 d-flex">
-        <Form.Control type="text" placeholder="Username" />
-        <Form.Control className="w-50" type="text" placeholder="Message" />
+        <Form.Control
+          onChange={(event) => setUsername(event.target.value)}
+          type="text"
+          placeholder="Username"
+          value={username}
+        />
+        <Form.Control
+          onChange={(event) => setMessage(event.target.value)}
+          className="w-50"
+          type="text"
+          placeholder="Message"
+          value={message}
+        />
         <Button variant="outline-secondary" type="submit">
           <SendFill />
         </Button>
