@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Button, Form, InputGroup } from 'react-bootstrap';
 import { SendFill } from 'react-bootstrap-icons';
 import axios from 'axios';
@@ -7,16 +7,14 @@ import { IMessageForm } from '../../../../types';
 const MessagesForm: FC<IMessageForm> = ({ url }) => {
   const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
-  const isSent = useRef(false);
   const [toggle, setToggle] = useState(false);
-  console.log('Form - render');
 
   useEffect(() => {
-    if (isSent.current) {
-      const data = {
-        message: message,
-        author: username,
-      };
+    const data = {
+      message: message,
+      author: username,
+    };
+    if (data.message !== '' && data.author !== '') {
       axios
         .post(url, data, {
           headers: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -24,15 +22,10 @@ const MessagesForm: FC<IMessageForm> = ({ url }) => {
         .then((response) => {
           console.log(response);
         });
-      return () => {
-        setMessage('');
-      };
-    } else {
-      isSent.current = true;
     }
-    return ()=>{
-      setMessage('')
-    }
+    return () => {
+      setMessage('');
+    };
   }, [toggle]);
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
